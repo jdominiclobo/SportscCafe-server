@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const articleSchema = new Schema({
   name: String,
   title: String,
   // image: {
@@ -10,5 +12,9 @@ const Schema = mongoose.Schema({
   imageLink: String,
   content: String,
   author: String,
-  createdAt: Date.now,
+  //   createdAt: new Date(),
 });
+
+const Article = mongoose.model("Article", articleSchema);
+
+module.exports = Article;

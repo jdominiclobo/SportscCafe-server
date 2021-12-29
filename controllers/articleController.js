@@ -1,9 +1,12 @@
 const Article = require("../models/article");
 
-module.exports.list = (req, res) => {
-  Article.find({ articleId: req.article._id }).then((articles) => {
-    res.json(articles);
-  });
+module.exports.list = async (req, res) => {
+  try {
+    const articles = await Article.find();
+    res.status(200).json(articles);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 };
 
 module.exports.show = (req, res) => {
@@ -30,7 +33,8 @@ module.exports.create = (req, res) => {
     content: body.content,
     author: body.author,
   });
-  article.articleId = req.article._id;
+
+  //   article.articleId = req.article._id;
   article
     .save()
     .then((article) => {
@@ -44,7 +48,7 @@ module.exports.create = (req, res) => {
 module.exports.update = (req, res) => {
   const id = req.params.id;
   const body = req.body;
-  Article.findOneAndUpdate({ articleId: req.article._id, _id: id }, body)
+  Article.findOneAndUpdate({ id }, body)
     .then((article) => {
       if (article) {
         res.json(article);
@@ -59,7 +63,7 @@ module.exports.update = (req, res) => {
 
 module.exports.delete = (req, res) => {
   const id = req.params.id;
-  Article.finOneAndDelete({ articleId: req.article._id, _id: id })
+  Article.findOneAndDelete({ id })
     .then((article) => {
       if (article) {
         res.json(article);
